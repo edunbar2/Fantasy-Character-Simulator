@@ -1,8 +1,8 @@
 from role import Role
 from item import Item
 from ability import Ability
-
 from bisect import bisect_right
+from abilityType import AbilityType
 
 class Character(object):
 
@@ -15,6 +15,7 @@ class Character(object):
         self.health = health
         self.money = money
         self.inventory = inventory
+        self.shield = 0.0
         
     # Basic Getters and Setters
     def get_name(self) -> str:
@@ -31,6 +32,8 @@ class Character(object):
         return self.inventory
     def get_level(self) -> int:
         return bisect_right(self.LEVEL_TABLE, self.experience)
+    def get_shield(self) -> float:
+        return self.shield
     
 
     def set_name(self, name: str):
@@ -45,6 +48,11 @@ class Character(object):
         self.money = money
     def set_inventory(self, inventory: list):
         self.inventory = inventory
+
+
+    def adjust_shield(self, shield: float):
+        self.shield += shield
+
         
     def add_money(self, gold=0, silver = 0, copper=0):
         """
@@ -80,6 +88,36 @@ class Character(object):
         else:
             ArithmeticError("Cannot do negative effect")
         return False
+
+    def do_action(self, ability: Ability,  target: Character) -> bool:
+        """
+        Perform abilities action on target
+        :param self:
+        :param ability: Action to perform
+        :param target: The target on which to perform the action
+        :return: Bool success or failure
+        """
+
+        match ability.type:
+            case AbilityType.DAMAGE:
+                res = target.take_damage(ability.effect_amount)
+                if res:
+                    print(f"####CONSOLE-LOG####\n{target.name} took {effect_amount} damage!\n####END-LOG####")
+                else:
+                    print("####CONSOLE-LOG####\nFailed to apply Damage!\n####END-LOG####")
+
+            case AbilityType.HEALING:
+                res = target.heal_character(ability.effect_amount)
+                if res:
+                    print(f"####CONSOLE-LOG\n{target.name} healed {effect_amount} health!\n####END-LOG####")
+                else:
+                    print(f"####CONSOLE-LOG\nFailed to apply Health!\n####END-LOG####")
+
+            case AbilityType.DEFENSE:
+                target.apply_shield(ability.effect_amount)
+
+            case AbilityType.ROLEPLAY:
+                print(ability.action_event)
 
     def tostring(self):
         print(f'Name: {self.name}\nRole: {self.role.name}\nExperience: {self.experience}\nLevel: {self.get_level()}\nMax Health: {self.health}\nMoney: {self.money}\nInventory: {self.inventory}')
