@@ -12,7 +12,8 @@ class Character(object):
         self.name = name
         self.experience = experience
         self.role = role
-        self.health = health
+        self.max_health = health
+        self.current_health = self.max_health
         self.money = money
         self.inventory = inventory
         self.shield = 0.0
@@ -24,8 +25,10 @@ class Character(object):
         return self.experience
     def get_role(self) -> Role:
         return self.role
-    def get_health(self) -> int:
-        return self.health
+    def get_max_health(self) -> int:
+        return self.max_health
+    def get_current_health(self) -> int:
+        return self.current_health
     def get_money(self) -> tuple:
         return self.money
     def get_inventory(self) -> list:
@@ -42,8 +45,10 @@ class Character(object):
         self.experience = experience
     def set_role(self, role: Role):
         self.role = role
-    def set_health(self, health: int):
-        self.health = health
+    def set_max_health(self, health: int):
+        self.max_health = health
+    def set_current_health(self, health: int):
+        self.current_health = health
     def set_money(self, money: tuple):
         self.money = money
     def set_inventory(self, inventory: list):
@@ -89,7 +94,7 @@ class Character(object):
             ArithmeticError("Cannot do negative effect")
         return False
 
-    def do_action(self, ability: Ability,  target: Character) -> bool:
+    def do_action(self, ability: Ability,  target) -> bool:
         """
         Perform abilities action on target
         :param self:
@@ -102,14 +107,14 @@ class Character(object):
             case AbilityType.DAMAGE:
                 res = target.take_damage(ability.effect_amount)
                 if res:
-                    print(f"####CONSOLE-LOG####\n{target.name} took {effect_amount} damage!\n####END-LOG####")
+                    print(f"####CONSOLE-LOG####\n{target.name} took {ability.get_effect_amount()} damage!\n####END-LOG####")
                 else:
                     print("####CONSOLE-LOG####\nFailed to apply Damage!\n####END-LOG####")
 
             case AbilityType.HEALING:
                 res = target.heal_character(ability.effect_amount)
                 if res:
-                    print(f"####CONSOLE-LOG\n{target.name} healed {effect_amount} health!\n####END-LOG####")
+                    print(f"####CONSOLE-LOG\n{target.name} healed {ability.get_effect_amount()} health!\n####END-LOG####")
                 else:
                     print(f"####CONSOLE-LOG\nFailed to apply Health!\n####END-LOG####")
 

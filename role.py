@@ -1,7 +1,7 @@
 
 class Role(object):
 
-    def __init__(self, name:str, abilities:dict, description:str):
+    def __init__(self, name:str, abilities:list, description:str):
         self.name = name
         self.abilities = abilities
         self.description = description

@@ -1,0 +1,7 @@
+---
+name: John
+experience: 1150
+role: 'wizard'
+health: 120
+money: [10,3,20]
+inventory: []
