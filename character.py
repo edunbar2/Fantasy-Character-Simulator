@@ -79,7 +79,7 @@ class Character(object):
 
     def take_damage(self, damage: int) -> bool:
         if damage > 0:
-            self.health -= damage
+            self.current_health -= damage
             return True
         else:
             ArithmeticError("Cannot do negative damage")
@@ -125,7 +125,7 @@ class Character(object):
                 print(ability.action_event)
 
     def tostring(self):
-        print(f'Name: {self.name}\nRole: {self.role.name}\nExperience: {self.experience}\nLevel: {self.get_level()}\nMax Health: {self.health}\nMoney: {self.money}\nInventory: {self.inventory}')
+        print(f'Name: {self.name}\nRole: {self.role.name}\nExperience: {self.experience}\nLevel: {self.get_level()}\nMax Health: {self.max_health}\nCurrent_Health: {self.current_health}\nMoney: {self.money}\nInventory: {self.inventory}')
 
 
 
